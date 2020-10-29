@@ -21,8 +21,8 @@ spec:
         version: {{ .Release.Name }}
     spec:
       containers:
+      - image: {{ .Values.image.tag }}
         - name: {{ .Values.name }}
-          image: {{ .Values.image.tag }}
           livenessProbe:
             failureThreshold: 3
             httpGet:
