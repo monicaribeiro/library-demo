@@ -20,6 +20,8 @@ spec:
         app: {{ .Values.name }}
         version: {{ .Release.Name }}
     spec:
+      imagePullSecrets:
+        - name: realwavelab-registry
       containers:
         - name: {{ .Values.name }}
           image: {{ .Values.image.tag }}
@@ -45,5 +47,16 @@ spec:
             timeoutSeconds: 1
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
-      imagePullSecrets:
-        - name: realwavelab-registry
+  {{ toYaml .Values.resources | indent 12 }}
+  {{- with .Values.nodeSelector }}
+nodeSelector:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.affinity }}
+affinity:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+tolerations:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
