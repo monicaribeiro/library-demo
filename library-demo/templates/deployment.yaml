@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       annotations:
-        sidecar.istio.io/inject: '{{ .Values.sidecarIstio.enabled }}' 
+        sidecar.istio.io/inject: '{{ .Values.sidecarIstio.enabled }}'
       labels:
         app: {{ .Values.name }}
         version: {{ .Release.Name }}
@@ -38,23 +38,25 @@ spec:
             httpGet:
               path: /
               port: 8080
-              scheme: HTTP  
+              scheme: HTTP
             initialDelaySeconds: 30
             periodSeconds: 20
             successThreshold: 1
-            timeoutSeconds: 1 
+            timeoutSeconds: 1
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
-{{ toYaml .Values.resources | indent 12 }}
-    {{- with .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+  {{ toYaml .Values.resources | indent 12 }}
+imagePullSecrets:
+  - name: realwavelab-registry
+  {{- with .Values.nodeSelector }}
+nodeSelector:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.affinity }}
+affinity:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+tolerations:
+  {{ toYaml . | indent 8 }}
+  {{- end }}
