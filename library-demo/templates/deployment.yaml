@@ -45,9 +45,9 @@ spec:
             timeoutSeconds: 1
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
+      imagePullSecrets:
+        - name: realwavelab-registry
   {{ toYaml .Values.resources | indent 12 }}
-imagePullSecrets:
-  - name: realwavelab-registry
   {{- with .Values.nodeSelector }}
 nodeSelector:
   {{ toYaml . | indent 8 }}
